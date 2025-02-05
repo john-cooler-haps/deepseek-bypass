@@ -58,7 +58,10 @@
         constructor() {
             super();
             this.addEventListener("readystatechange", function () {
-                if (this.readyState === 4 && this.responseText.includes('"finish_reason":"content_filter"')) {
+                if (this.readyState === 4 && (
+                    this.responseText.includes('"finish_reason":"content_filter"') ||
+                    this.responseText.includes('"delta":{"content":"The server is busy.')
+                )) {
                     console.warn("🚨 Censorship detected in XHR response!");
                     window.postMessage({
                         type: "DEEPSEEK_CENSORSHIP",
@@ -119,7 +122,10 @@
         const clonedResponse = response.clone();
         try {
             const text = await clonedResponse.text();
-            if (text.includes('"finish_reason":"content_filter"')) {
+            if (
+                text.includes('"finish_reason":"content_filter"') ||
+                text.includes('"delta":{"content":"The server is busy.')
+            ) {
                 console.warn("🚨 Censorship detected in Fetch response!");
                 window.postMessage({
                     type: "DEEPSEEK_CENSORSHIP",
