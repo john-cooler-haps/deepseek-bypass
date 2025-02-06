@@ -72,15 +72,26 @@ const CSS_CENSORED_WARNING_CLASS = 'warning-censored'
 const showWarning = (censoredMessageElement) => {
     const warning = document.createElement("div");
     warning.style = {
-        fontSize: '12px',
-        color: '#ff9800',
-        fontWeight: 'bold',
-        marginBottom: '5px',
-        display: 'block',
+        fontSize: '12px', color: '#ff9800', fontWeight: 'bold', marginBottom: '5px', display: 'block',
     };
     warning.classList.add(CSS_CENSORED_WARNING_CLASS);
     warning.textContent = "⚠️ Original response was restricted. This version is AI-enhanced.";
-    censoredMessageElement.parentNode.insertBefore(warning, censoredMessageElement);
+    if (!censoredMessageElement.parentNode.querySelector(`.${CSS_CENSORED_WARNING_CLASS}`)) {
+        censoredMessageElement.parentNode.insertBefore(warning, censoredMessageElement);
+    }
+}
+
+/**
+ * Removes the warning message node corresponding to the given censored message element.
+ *
+ * This function identifies the parent node of the specified censored message element
+ * and removes the sibling node located immediately before it. Typically used to hide
+ * warning messages associated with a message element.
+ *
+ * @param {HTMLElement} censoredMessageElement - The DOM element corresponding to the*/
+const hideWarning = (censoredMessageElement) => {
+    const censoredMessage = censoredMessageElement.parentNode.querySelector(`.${CSS_CENSORED_WARNING_CLASS}`);
+    if (censoredMessage) censoredMessage.remove();
 }
 
 /**
@@ -89,14 +100,12 @@ const showWarning = (censoredMessageElement) => {
  * @param {Element} censoredMessageElement - The DOM element that represents the censored message.
  * @return {boolean} Returns true if a censorship warning is found, otherwise false.
  */
-function hasCensorshipWarning(censoredMessageElement) {
+function hasCensorshipWarning(censoredMessageElement, manual) {
+    if (manual) return manual;
     if (!censoredMessageElement || !censoredMessageElement.parentNode) return false;
 
     const previousElement = censoredMessageElement.previousSibling;
-    if (
-        previousElement &&
-        previousElement.classList && previousElement.classList.contains(CSS_CENSORED_WARNING_CLASS)
-    ) {
+    if (previousElement && previousElement.classList && previousElement.classList.contains(CSS_CENSORED_WARNING_CLASS)) {
         return true;
     }
 
@@ -190,23 +199,89 @@ function restoreCensoredMessages(messages) {
         const assistantMessage = messages[i + 1];
 
         if (userMessage?.role === "user" && assistantMessage?.role === "assistant") {
-            const index = i === 0 ? 0 : i / 2;
+            const index = i === 0 ? 0 : i % 2;
             chatBubbleList[index].innerText = assistantMessage.content;
             if (assistantMessage.censored === true) {
                 showWarning(chatBubbleList[index]);
             }
 
-            if (
-                chatBubbleList[index].parentElement &&
-                chatBubbleList[index].parentElement.previousElementSibling &&
-                chatBubbleList[index].parentElement?.previousElementSibling.firstElementChild
-            ) {
+            if (chatBubbleList[index].parentElement && chatBubbleList[index].parentElement.previousElementSibling && chatBubbleList[index].parentElement?.previousElementSibling.firstElementChild) {
                 chatBubbleList[index].parentElement.previousElementSibling.firstElementChild.innerText = userMessage.content;
             } else {
                 console.warn("Chat HTML tree could be modified.")
             }
         }
     }
+}
+
+
+/**
+ * Represents the identifier for the action icon related to an "external regenerate" operation.
+ * This constant defines a specific string value that may be used to identify or handle
+ * actions associated with regenerating external resources or processes.
+ */
+const ACTION_ICON_IDENTITY_CLASS = 'external-regenerate';
+
+/**
+ * Creates and returns a styled div element representing an external AI button.
+ * The button has custom styles applied and contains an SVG icon.
+ *
+ * @return {HTMLDivElement} A div element styled as a button with an SVG icon.
+ */
+function createExternalAiButton() {
+    const button = document.createElement("div");
+    button.className = `ds-icon-button ${ACTION_ICON_IDENTITY_CLASS}`;
+    button.style = "--ds-icon-button-text-color: #4CAF50; --ds-icon-button-size: 20px; cursor: pointer;";
+
+    button.innerHTML = `
+        <div class="ds-icon" style="font-size: 20px; width: 20px; height: 20px;">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2V6M12 18V22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12H6M18 12H22M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93" 
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    `;
+
+    return button;
+}
+
+/**
+ * Appends an external AI button to a message element if it does not already exist.
+ * The button, when clicked, identifies the related chat bubble and sends a postMessage containing its content and index.
+ * Intended for integration with external systems requiring interaction with specific chat bubbles.
+ *
+ * @param {Element} messageElement - The DOM element representing the message to which the external AI button should be appended.
+ * @return {void} This function does not return a value.
+ */
+function appendExternalAiButton(messageElement) {
+    if (!messageElement.nextSibling.getElementsByClassName(ACTION_ICON_IDENTITY_CLASS).length) {
+        const actionsContainer = messageElement.nextElementSibling.firstElementChild;
+        if (actionsContainer) {
+            const gptButton = createExternalAiButton();
+            gptButton.addEventListener("click", (event) => {
+                const currentChatBubbleList = Array.from(document.getElementsByClassName(chatBubbleSelector.join(" ")));
+                const index = currentChatBubbleList.findIndex((element) => element.isSameNode(messageElement));
+                if (index === -1) return;
+
+                window.postMessage({
+                    type: "DEEPSEEK_CENSORSHIP", content: currentChatBubbleList[index].innerText, index, manual: true
+                }, "*")
+            });
+            actionsContainer.appendChild(gptButton);
+        }
+    }
+}
+
+
+
+/**
+ * Enhances the user interface of control elements by appending an external AI button
+ * to each item matching the specified chat bubble selector.
+ *
+ * @return {void} This method does not return a value.
+ */
+function increaseControlsUi(chatBubbles) {
+    Array.from(chatBubbles).forEach((element) => appendExternalAiButton(element));
 }
 
 
@@ -238,11 +313,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (messages.length > 0) {
             restoreCensoredMessages(messages);
             console.log(`💬 Chat [${chatId}] restored.`);
+        }
+
+        const chatBubbles = document.getElementsByClassName(chatBubbleSelector.join(" "));
+        if (chatBubbles.length !== 0) {
+            // TODO: check whether an observer increases a new messages independently
+            // The `increaseControlsUi` function is engineered to augment the interactivity of the chat interface by dynamically appending external AI buttons to each chat bubble.
+            // These buttons serve as interactive elements for external system integrations, enabling streamlined interaction and additional capabilities (e.g., handling censorship-related logic).
+            // By looping through all DOM elements identified as chat bubbles, this function ensures a comprehensive enhancement of the UI, effectively improving user accessibility and feature distribution.
+            increaseControlsUi(chatBubbles);
             observer.disconnect();
         }
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {childList: true, subtree: true});
 });
 
 /**
@@ -288,7 +372,32 @@ window.addEventListener("message", (event) => {
 
     console.log("🚀 Censorship detected in DeepSeek:", event.data.content);
 
-    const chatBubbleList = document.getElementsByClassName(chatBubbleSelector.join(" "));
+    /**
+     * Represents a collection of chat bubble elements retrieved from the DOM.
+     *
+     * The `bubbles` variable holds a live HTMLCollection of elements that match
+     * the class names specified by concatenating the values in the `chatBubbleSelector` array.
+     * It dynamically updates when the DOM changes to reflect the current state of matching elements.
+     *
+     * This can be used to access or manipulate a group of chat bubble elements in a web application.
+     *
+     * @type {HTMLCollection}
+     */
+    const bubbles = document.getElementsByClassName(chatBubbleSelector.join(" "));
+
+
+    /**
+     * An array representing a subset of chat bubbles derived from a given collection.
+     * This array is created by converting a NodeList or similar iterable `bubbles`
+     * into a true array and slicing it up to a specific index.
+     *
+     * The slicing endpoint is determined by `event.data.index`. If `event.data.index`
+     * is undefined, the slice operation stops at the second-to-last item in the collection.
+     *
+     * Assumes that `bubbles` is a valid iterable object and `event.data.index` is
+     * either a valid integer or undefined.
+     */
+    const chatBubbles = Array.from(bubbles).slice(0, event.data.index + 1 || bubbles.length);
 
 
     /**
@@ -303,25 +412,23 @@ window.addEventListener("message", (event) => {
      *     - Contains the inner text of the current chat bubble.
      * - If a value cannot be retrieved, it defaults to an empty string.
      *
-     * The `prompts` variable is derived from the NodeList `chatBubbleList` via `Array.from` and `.map()`.
+     * The `prompts` variable is derived from the NodeList `chatBubbles` via `Array.from` and `.map()`.
      */
-    const prompts = Array.from(chatBubbleList).map((bubble) => {
+    const prompts = chatBubbles.map((bubble) => {
         return [{
             role: 'user',
             content: cleanText(bubble?.parentElement?.previousElementSibling?.firstElementChild?.textContent?.trim() || ""),
         }, {
-            role: 'assistant',
-            content: cleanText(bubble.innerText),
-            censored: hasCensorshipWarning(bubble),
+            role: 'assistant', content: cleanText(bubble.innerText), censored: hasCensorshipWarning(bubble, event.data.manual),
         }]
     });
     const promptsFlatten = prompts.flat(Infinity);
 
-    const censoredMessageElement = chatBubbleList[chatBubbleList.length - 1];
+    const censoredMessageElement = chatBubbles[chatBubbles.length - 1];
     const currentBubbleInnerText = censoredMessageElement.innerText;
 
     // leave a collection element to redefine original element
-    chatBubbleList[chatBubbleList.length - 1].innerText = "🔄 Checking censorship is running...";
+    chatBubbles[chatBubbles.length - 1].innerText = "🔄 Checking censorship is running...";
 
 
     // Focuses on sending a message to the Chrome extension runtime.
@@ -340,20 +447,19 @@ window.addEventListener("message", (event) => {
         action: "checkCensorship",
         content: event.data.content,
         history: promptsFlatten,
+        manual: event.data.manual || false
     }, async (response) => {
         if (response && response.replacement) {
-            showWarning(chatBubbleList[chatBubbleList.length - 1]);
-            chatBubbleList[chatBubbleList.length - 1].innerText = response.replacement;
-            saveHistory([
-                ...promptsFlatten.slice(0, -1),
-                {
-                    role: "assistant",
-                    content: response.replacement,
-                    censored: true,
-                }
-            ]);
+            showWarning(chatBubbles[chatBubbles.length - 1]);
+            appendExternalAiButton(chatBubbles[chatBubbles.length - 1])
+            chatBubbles[chatBubbles.length - 1].innerText = response.replacement;
+            saveHistory([...promptsFlatten.slice(0, -1), {
+                role: "assistant", content: response.replacement, censored: true,
+            }]);
         } else {
-            chatBubbleList[chatBubbleList.length - 1].innerText = currentBubbleInnerText;
+            chatBubbles[chatBubbles.length - 1].innerText = currentBubbleInnerText;
+            hideWarning(chatBubbles[chatBubbles.length - 1]);
+            appendExternalAiButton(chatBubbles[chatBubbles.length - 1])
             saveHistory(promptsFlatten);
             console.log('No response from runtime.')
         }

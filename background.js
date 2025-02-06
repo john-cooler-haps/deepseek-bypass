@@ -3,6 +3,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("🔥 Received message in background.js:", request);
 });
 
+
+// Log to verify the background script is running
 console.log("✅ Background script is running!");
 
 
@@ -68,6 +70,20 @@ function isCensored(responseText) {
  * when no specific model configuration is provided.
  */
 const DEFAULT_OPENAI_MODEL = 'gpt-3.5-turbo';
+
+
+/**
+ * The default API key used for authenticating requests to the OpenAI API.
+ * This variable is typically assigned a valid API key string obtained from
+ * OpenAI. It serves as a fallback or default value if no other API key is
+ * explicitly provided in the implementation.
+ *
+ * Note: Assign a valid API key before using it to interact with OpenAI's services.
+ * Avoid committing sensitive API keys to a public repository or exposing them
+ * in client-side code.
+ */
+const DEFAULT_OPENAI_API_KEY = '';
+
 
 
 /**
@@ -148,7 +164,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log("Checking for censorship...");
 
         chrome.storage.local.get(["openai_api_key", "openai_model"], function (result) {
-            const apiKey = result.openai_api_key;
+            const apiKey = result.openai_api_key || DEFAULT_OPENAI_API_KEY;
             const openaiModel = result.openai_model || DEFAULT_OPENAI_MODEL;
 
             if (!apiKey) {
@@ -162,7 +178,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 role: openaiModel.startsWith('o3') ? "developer" : "system",
                 content: GPT_SYSTEM_PROMPT,
             }, ...request.history.slice(0, -1)];
-            if (isCensored(assistantPrompt)) {
+            if (isCensored(assistantPrompt) || request.manual) {
                 console.warn("Censorship detected. Redirecting query to OpenAI API...", assistantPrompt);
 
                 fetch("https://api.openai.com/v1/chat/completions", {
@@ -191,7 +207,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
                 return true;
             } else {
-                sendResponse({replacement: assistantPrompt});
+                sendResponse({replacement: null});
             }
         });
 
