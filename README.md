@@ -32,6 +32,41 @@ cd deepseek-bypass
 3. Click **Load Unpacked** and select the `deepseek-bypass` folder.
 4. The extension is now active and monitoring DeepSeek AI responses!
 
+### **🔑 How to Get Your OpenAI API Key**
+
+To use OpenAI’s models in this extension, you need to generate an API key from OpenAI. Follow these simple steps to get your API key and start using external AI responses.
+
+---
+
+### **🛠 Step-by-Step Guide**
+
+1️⃣ **Go to OpenAI's Platform**
+- Open your browser and visit: [https://platform.openai.com/signup](https://platform.openai.com/signup)
+- If you don’t have an OpenAI account, sign up for free. If you already have one, log in.
+
+2️⃣ **Navigate to API Keys**
+- Once logged in, go to the **API Keys** section: [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)
+
+3️⃣ **Generate a New API Key**
+- Click the **"Create new secret key"** button.
+- Copy the generated API key immediately – **you won’t be able to see it again!**
+
+4️⃣ **Paste the Key in the Extension Settings**
+- Open the Chrome extension settings.
+- Find the section for OpenAI API Key.
+- Paste your key and save the settings.
+
+---
+
+### **⚠ Important Notes**
+🔹 **Keep your API key private** – do not share it with others.  
+🔹 **Usage limits apply** – OpenAI may charge based on usage. Check pricing: [https://openai.com/pricing](https://openai.com/pricing)  
+🔹 **You can regenerate or delete your key** anytime from the OpenAI API Keys page.
+
+Now you’re ready to use OpenAI’s responses in the extension! 🚀
+
+---
+
 ## 🛠 Features
 ✔ **Automated Detection:** Monitors and identifies censored responses in real time.
 ✔ **Seamless GPT Integration:** Fetches and injects AI-generated responses when censorship is detected.
