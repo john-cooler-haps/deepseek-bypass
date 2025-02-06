@@ -462,7 +462,9 @@ window.addEventListener("message", (event) => {
             chatBubbles[chatBubbles.length - 1].innerHTML = currentBubbleInnerHtml;
             hideWarning(chatBubbles[chatBubbles.length - 1]);
             appendExternalAiButton(chatBubbles[chatBubbles.length - 1])
-            saveHistory(promptsFlatten);
+            saveHistory([...promptsFlatten.slice(0, -1), {
+                role: "assistant", content: chatBubbles[chatBubbles.length - 1].innerText, censored: false,
+            }]);
             console.log('No response from runtime.')
         }
     });
