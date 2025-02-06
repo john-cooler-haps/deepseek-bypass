@@ -48,14 +48,92 @@ cd deepseek-bypass
 ## ⚖ Ethical Considerations
 This project is built with **scientific integrity and social responsibility**. While it bypasses censorship, it **does not promote harmful, illegal, or misleading content**. The intent is to provide users with a **fuller understanding of the information landscape** without compromising ethical AI principles.
 
-## 🌍 Contributing
-We welcome contributions from researchers, developers, and AI ethics advocates! To contribute:
+## ⚖️ Legal Considerations
 
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/xyz`
-3. Commit your changes: `git commit -m "Add feature XYZ"`
-4. Push to the branch: `git push origin feature/xyz`
-5. Open a **Pull Request**.
+This project is designed to enhance user accessibility and provide alternative AI-generated responses **without modifying DeepSeek’s internal models, API, or infrastructure**. It operates **independently** and does not interfere with DeepSeek’s services.
+
+### 🛑 Compliance with DeepSeek Terms of Use
+We acknowledge and respect DeepSeek’s **Terms of Use**. Below is a breakdown of key points in relation to this project:
+
+- **📜 Section 3.5 – Interference with Systems, Networks, and Models**  
+  _Our extension does not modify, attack, or disrupt DeepSeek’s functionality, API, or infrastructure._
+
+- **🔍 Section 3.3 – DeepSeek’s Monitoring of Inputs and Outputs**  
+  _DeepSeek may monitor user interactions, but this extension does not alter DeepSeek’s logging mechanisms or interfere with internal content moderation._
+
+- **📊 Section 4.3 – Data Collection for Service Improvement**  
+  _DeepSeek collects user interaction data for internal model refinement. Our extension does not obstruct or manipulate this process._
+
+- **🛡️ Section 5.1 – Intellectual Property Protection**  
+  _DeepSeek retains intellectual property rights over its UI, models, and API. This extension does not copy, modify, or interact with DeepSeek’s internal code._
+
+- **🚨 Section 3.6 – Prohibited Use Cases**  
+  _DeepSeek restricts harmful, deceptive, and unauthorized usage. Our extension operates transparently, providing an **optional AI source** without misrepresenting DeepSeek’s outputs._
+
+### ✅ Ethical & Responsible Use
+This extension is developed in accordance with **ethical AI practices**, ensuring:
+- **No direct modification** of DeepSeek-generated responses.
+- **Transparency** in content sources and AI selection.
+- **User control** over alternative AI responses.
+- **Respect for AI moderation policies** while promoting diverse perspectives.
+
+📌 **If DeepSeek explicitly prohibits third-party extensions in the future, users are responsible for compliance.** We encourage open dialogue and fair AI accessibility.
+
+---
+
+## 📂 Branch Naming Convention
+
+To ensure a structured and scientifically rigorous development process, this project follows a **three-tiered branch naming system**, which aligns with best practices in machine learning research, software engineering, and human-computer interaction (HCI). The naming convention is inspired by methodologies from **ACM, IEEE, and research-driven software development principles**.
+
+### **📌 Format**
+```
+[domain]/[scope]/[specific-task]
+```
+- **`domain`** – The general category of work (`ml`, `nlp`, `hci`, `systems`, `experiment`, `theory`, `benchmarking`, etc.).
+- **`scope`** – The specific subcategory (`feature`, `hypothesis`, `implementation`, `evaluation`, `optimization`, etc.).
+- **`specific-task`** – A clear and concise description of the branch’s purpose (`gpt-enhancement`, `censorship-detection`, `prompt-routing`, etc.).
+
+### **📌 Examples**
+| Branch Name | Description |
+|------------|------------|
+| `ml/feature/censorship-detection` | Implementation of an ML model to detect censorship patterns |
+| `nlp/experiment/bias-mitigation` | Experimental study on reducing biases in language models |
+| `hci/evaluation/user-interaction` | Analysis of UI/UX effectiveness in AI-assisted chat interfaces |
+| `systems/implementation/chat-history` | Development of a persistent chat history mechanism |
+| `benchmarking/performance/deepseek-latency` | Performance evaluation of DeepSeek’s response time |
+| `theory/hypothesis/ai-censorship-patterns` | Theoretical research on AI censorship mechanisms |
+| `experiment/gpt-vs-deepseek` | Comparative experiment between GPT and DeepSeek censorship behaviors |
+
+### **📌 Why This Structure?**
+✅ **Scientific Precision** – Inspired by research taxonomies from ACM and IEEE.  
+✅ **Clear Categorization** – Easily distinguishes between theoretical, experimental, and implementation branches.  
+✅ **Scalability** – Supports a wide range of research and engineering initiatives.  
+✅ **Improved Collaboration** – Enables contributors to understand the purpose of each branch instantly.
+
+This structured approach ensures that development and research remain **organized, traceable, and adaptable** to future advancements in AI and censorship detection.
+
+---
+
+## 🌍 Contributing
+We welcome contributions from researchers, developers, and AI ethics advocates! This project follows a structured **three-tier branching model** to ensure clarity and maintainability.
+
+### 🚀 How to Contribute
+To contribute, follow these steps:
+
+1. **Fork** the repository.
+2. **Create a new branch** based on the area of contribution:
+    - `git checkout -b ml/feature/censorship-detection`
+    - `git checkout -b ui/feature/gpt-regeneration`
+    - `git checkout -b experiment/prompt-injection`
+3. **Commit your changes**:
+    - `git commit -m "Improve ML censorship detection"`
+4. **Push to your branch**:
+    - `git push origin ml/feature/censorship-detection`
+5. **Open a Pull Request**, ensuring it is assigned to the correct branch.
+
+💡 For major changes, please open an **Issue** first to discuss the direction.
+
+---
 
 ## 📜 License
 This project is open-source under the **MIT License**. Feel free to use, modify, and distribute with proper attribution.
