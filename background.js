@@ -1,3 +1,17 @@
+/**
+ * @file background.js
+ *
+ * This script implements the service worker for the Chrome extension.
+ * It handles background tasks such as monitoring and intercepting API requests,
+ * logging messages, and detecting censorship-related responses using AI/ML-based processing techniques.
+ *
+ * Note:
+ * - This script runs as a Service Worker, meaning it is event-driven and does not retain state
+ *   between invocations.
+ * - Due to the limitations of Service Workers, persistent background execution is not possible.
+ * - Future enhancements can explore optimized AI/ML integrations with event-based triggers.
+ */
+
 // This listener acts as a background running check for messages sent to the extension.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("🔥 Received message in background.js:", request);
@@ -164,22 +178,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log("Checking for censorship...");
 
         chrome.storage.local.get(["openai_api_key", "openai_model"], function (result) {
-            const apiKey = result.openai_api_key || DEFAULT_OPENAI_API_KEY;
-            const openaiModel = result.openai_model || DEFAULT_OPENAI_MODEL;
-
-            if (!apiKey) {
-                console.warn("No OpenAI API key set. Skipping censorship bypass.");
-                sendResponse({replacement: "Error: No OpenAI API key set. Skipping censorship bypass."});
-                return;
-            }
-
             const assistantPrompt = request.history[request.history.length - 1].content;
-            const messages = [{
-                role: openaiModel.startsWith('o3') ? "developer" : "system",
-                content: GPT_SYSTEM_PROMPT,
-            }, ...request.history.slice(0, -1)];
             if (isCensored(assistantPrompt) || request.manual) {
                 console.warn("Censorship detected. Redirecting query to OpenAI API...", assistantPrompt);
+
+                const apiKey = result.openai_api_key || DEFAULT_OPENAI_API_KEY;
+                const openaiModel = result.openai_model || DEFAULT_OPENAI_MODEL;
+
+                if (!apiKey) {
+                    console.warn("No OpenAI API key set. Skipping censorship bypass.");
+                    sendResponse({replacement: "Error: No OpenAI API key set. Skipping censorship bypass."});
+                    return;
+                }
+
+                const messages = [{
+                    role: openaiModel.startsWith('o3') ? "developer" : "system",
+                    content: GPT_SYSTEM_PROMPT,
+                }, ...request.history.slice(0, -1)];
 
                 fetch("https://api.openai.com/v1/chat/completions", {
                     method: "POST",
