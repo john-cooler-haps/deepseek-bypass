@@ -457,7 +457,9 @@ window.addEventListener("message", (event) => {
                 role: "assistant", content: response.replacement, censored: true,
             }]);
         } else {
-            chatBubbles[chatBubbles.length - 1].innerText = currentBubbleInnerText;
+            // Restores the chat bubble's content to its original text if there is no response or replacement from the DeepSeek runtime,
+            // ensuring the prompt remains preserved in its original form.
+            // chatBubbles[chatBubbles.length - 1].innerText = currentBubbleInnerText;
             hideWarning(chatBubbles[chatBubbles.length - 1]);
             appendExternalAiButton(chatBubbles[chatBubbles.length - 1])
             saveHistory(promptsFlatten);
