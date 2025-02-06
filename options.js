@@ -20,8 +20,17 @@ document.getElementById("saveKey").addEventListener("click", function () {
  */
 const DEFAULT_OPENAI_MODEL = 'gpt-3.5-turbo';
 
+
+/**
+ * A constant variable used to store the default OpenAI API key.
+ * This value may be overridden if an alternative API key is provided at runtime.
+ * The variable is initialized as an empty string and should be updated with a
+ * valid API key to enable authorized interaction with OpenAI services.
+ */
+const DEFAULT_OPENAI_API_KEY = '';
+
 // Loads the saved API key and OpenAI model when the page is opened
 chrome.storage.local.get(["openai_api_key", "openai_model"], function (result) {
-    document.getElementById("apiKey").value = result.openai_api_key || "";
+    document.getElementById("apiKey").value = result.openai_api_key || DEFAULT_OPENAI_API_KEY;
     document.getElementById("model").value = result.openai_model || DEFAULT_OPENAI_MODEL;
 });
