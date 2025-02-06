@@ -199,7 +199,7 @@ function restoreCensoredMessages(messages) {
         const assistantMessage = messages[i + 1];
 
         if (userMessage?.role === "user" && assistantMessage?.role === "assistant") {
-            const index = i === 0 ? 0 : i % 2;
+            const index = i === 0 ? 0 : Math.floor(i / 2);
             chatBubbleList[index].innerText = assistantMessage.content;
             if (assistantMessage.censored === true) {
                 showWarning(chatBubbleList[index]);
@@ -425,7 +425,7 @@ window.addEventListener("message", (event) => {
     const promptsFlatten = prompts.flat(Infinity);
 
     const censoredMessageElement = chatBubbles[chatBubbles.length - 1];
-    const currentBubbleInnerText = censoredMessageElement.innerText;
+    const currentBubbleInnerHtml = censoredMessageElement.innerHTML;
 
     // leave a collection element to redefine original element
     chatBubbles[chatBubbles.length - 1].innerText = "🔄 Checking censorship is running...";
@@ -459,7 +459,7 @@ window.addEventListener("message", (event) => {
         } else {
             // Restores the chat bubble's content to its original text if there is no response or replacement from the DeepSeek runtime,
             // ensuring the prompt remains preserved in its original form.
-            // chatBubbles[chatBubbles.length - 1].innerText = currentBubbleInnerText;
+            chatBubbles[chatBubbles.length - 1].innerHTML = currentBubbleInnerHtml;
             hideWarning(chatBubbles[chatBubbles.length - 1]);
             appendExternalAiButton(chatBubbles[chatBubbles.length - 1])
             saveHistory(promptsFlatten);
