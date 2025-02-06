@@ -68,11 +68,11 @@ Now you’re ready to use OpenAI’s responses in the extension! 🚀
 ---
 
 ## 🛠 Features
-✔ **Automated Detection:** Monitors and identifies censored responses in real time.
-✔ **Seamless GPT Integration:** Fetches and injects AI-generated responses when censorship is detected.
-✔ **Zero User Intervention:** Works in the background without requiring manual prompts.
-✔ **Respectful Bypass:** Does not hack or manipulate DeepSeek AI, only enhances response availability.
-✔ **Privacy-Preserving:** The extension does not collect or store user queries.
+- ✔ **Automated Detection:** Monitors and identifies censored responses in real time.
+- ✔ **Seamless GPT Integration:** Fetches and injects AI-generated responses when censorship is detected.
+- ✔ **Zero User Intervention:** Works in the background without requiring manual prompts.
+- ✔ **Respectful Bypass:** Does not hack or manipulate DeepSeek AI, only enhances response availability.
+- ✔ **Privacy-Preserving:** The extension does not collect or store user queries.
 
 ## 🔬 Technical Details
 - **Manifest v3 Chrome Extension** for security and performance.
