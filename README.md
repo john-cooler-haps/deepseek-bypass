@@ -80,6 +80,33 @@ Now you’re ready to use OpenAI’s responses in the extension! 🚀
 - **Fetch API Override & Streaming Data Processing** to capture censored messages.
 - **OpenAI GPT-4 API Integration** for censorship-free responses.
 
+---
+
+## **📌 Contributing & Issue Tracking**
+
+We actively maintain and improve this project, and we welcome contributions from developers, AI researchers, and enthusiasts!
+
+💡 **Looking for something to work on?**  
+Check out the **[Issues](https://github.com/john-cooler-haps/deepseek-bypass/issues)** section to find open tasks, feature requests, and bug reports.
+
+---
+
+### **🔍 How to Get Started?**
+- 1️⃣ **Browse Open Issues** – Visit the [Issues](https://github.com/john-cooler-haps/deepseek-bypass/issues) tab to find tasks.
+- 2️⃣ **Comment & Discuss** – If you're interested in working on an issue, comment on it to let us know!
+- 3️⃣ **Submit a Pull Request** – Once you've implemented a solution, open a PR for review.
+
+---
+
+### **🤝 Need Help or Have a New Idea?**
+If you encounter a bug, have an improvement suggestion, or want to propose a feature, feel free to:  
+✅ **Open a new issue** with a clear description of the task.  
+✅ **Join discussions** on existing issues to collaborate with the community.
+
+📢 **Your contributions help improve this project – let’s build together! 🚀**
+
+---
+
 ## ⚖ Ethical Considerations
 This project is built with **scientific integrity and social responsibility**. While it bypasses censorship, it **does not promote harmful, illegal, or misleading content**. The intent is to provide users with a **fuller understanding of the information landscape** without compromising ethical AI principles.
 
