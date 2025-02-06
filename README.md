@@ -48,6 +48,37 @@ cd deepseek-bypass
 ## ⚖ Ethical Considerations
 This project is built with **scientific integrity and social responsibility**. While it bypasses censorship, it **does not promote harmful, illegal, or misleading content**. The intent is to provide users with a **fuller understanding of the information landscape** without compromising ethical AI principles.
 
+## ⚖️ Legal Considerations
+
+This project is designed to enhance user accessibility and provide alternative AI-generated responses **without modifying DeepSeek’s internal models, API, or infrastructure**. It operates **independently** and does not interfere with DeepSeek’s services.
+
+### 🛑 Compliance with DeepSeek Terms of Use
+We acknowledge and respect DeepSeek’s **Terms of Use**. Below is a breakdown of key points in relation to this project:
+
+- **📜 Section 3.5 – Interference with Systems, Networks, and Models**  
+  _Our extension does not modify, attack, or disrupt DeepSeek’s functionality, API, or infrastructure._
+
+- **🔍 Section 3.3 – DeepSeek’s Monitoring of Inputs and Outputs**  
+  _DeepSeek may monitor user interactions, but this extension does not alter DeepSeek’s logging mechanisms or interfere with internal content moderation._
+
+- **📊 Section 4.3 – Data Collection for Service Improvement**  
+  _DeepSeek collects user interaction data for internal model refinement. Our extension does not obstruct or manipulate this process._
+
+- **🛡️ Section 5.1 – Intellectual Property Protection**  
+  _DeepSeek retains intellectual property rights over its UI, models, and API. This extension does not copy, modify, or interact with DeepSeek’s internal code._
+
+- **🚨 Section 3.6 – Prohibited Use Cases**  
+  _DeepSeek restricts harmful, deceptive, and unauthorized usage. Our extension operates transparently, providing an **optional AI source** without misrepresenting DeepSeek’s outputs._
+
+### ✅ Ethical & Responsible Use
+This extension is developed in accordance with **ethical AI practices**, ensuring:
+- **No direct modification** of DeepSeek-generated responses.
+- **Transparency** in content sources and AI selection.
+- **User control** over alternative AI responses.
+- **Respect for AI moderation policies** while promoting diverse perspectives.
+
+📌 **If DeepSeek explicitly prohibits third-party extensions in the future, users are responsible for compliance.** We encourage open dialogue and fair AI accessibility.
+
 ---
 
 ## 📂 Branch Naming Convention
